@@ -1,0 +1,55 @@
+TCP-Server is my attempt to make a framework to run a TCP-Server without any protocol(Chat, Web,IRC...)
+The developer who are going to use TCP-Server.dll will have to add the necessary protocol to its TCP-Application.
+The component will only handle the communikation between Server <---> Client.
+As far as I can tell is the server faster than Winsock.ocx and less cpu and memory demanding.
+
+Testresults on my machine, AMD Duron 750mhz, 768mb memory
+3000 connected clients gave 5932k in memory usage on the server.
+During the connection of 3000 clients, in a loop, the cpu jumped between 0-40 %
+
+It works excellent for chat-Servers.
+
+HOW IT WORKS:
+
+Note that the parameter sckDesc,sckDescriptor is the socketdescriptor, use this value to keep track of
+different clients. for ex in your TCP-Application you could have a Client Collection with the key as
+the socketdescriptor.
+
+Public Function StartServing(ByVal lngPort As Long) As Boolean
+'The server starts listening for communication on seleced Port, will return true if all went well
+
+Public Sub StopServing()
+'The server will stop listening for communikation and will disconnect already connected clients
+
+Public Function NoOfConnections() As Long
+'Will return the number of connected client
+
+Public Function SendDataToClient(ByVal sckDesc As Long, ByVal Message As String) As Long
+'Transmit data to selected client, returns the number of byte transmitted.
+
+Public Sub SendDataToAll(ByVal Message As String)
+'Transmit data to all connected clients
+
+Public Sub CloseSocketHandle(ByVal sckDesc As Long)
+'close down the client
+
+Public Function GetUserIP(ByVal sckDesc As Long) As String
+'Returns the clients IPnumber
+
+Public Function GetUserHostName(ByVal sckDesc As Long) As String
+'Returns the clients HostName
+
+Public Function GetUserPing(ByVal sckDesc As Long, Optional TimeOutMS As Integer = 500) As Integer
+'Will ping the client and return the result (Warning the call is not async, go with low TimeoutMS)
+
+EVENTS:
+
+Public Event OnDataArrival(ByVal sckDescriptor As Long, ByVal Data As String)
+'Will be triggered when The client sends data
+
+Public Event OnNewConnection(ByVal sckDescriptor As Long)
+'Will be triggered when a Client arrives
+
+Public Event OnSocketClose(ByVal sckDescriptor As Long)
+'Will be triggered when a client close down, or the server shutdown the client
+

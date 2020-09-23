@@ -1,0 +1,31 @@
+TCP-Client
+It was pure coincidence that this component was created. When I was about to try out TCP-Server.dll
+could winsock.ocx not test it properly, took too much CPU and memory.
+TCP-Client could be used as a framework for ex a Chat-Client
+
+Note:
+Instead of indexes I am using socketdescriptor that you could store in an collection for ex...
+
+HOW IT WORKS:
+
+Public Function Connect(ByVal stRemoteHost As String, ByVal RemotePort As Long) As Long
+To connect to a server, give this function the serveradress and port.
+You will create a new connection for each time you call this function.
+Observere that the returnvalue is the socketdescriptor being used, but it is not fully reliable
+since the call is async. Trust in Event OnConnection instead.
+
+Public Function Send(ByVal sckDescriptor As Long, ByVal strData As String) As Long
+Send data from the client With the given socketdescriptor, to the connected server
+
+Public Sub CloseSocket(ByVal sckDescriptor As Long)
+Close the connection with the given socketdescriptor
+
+Public Event OnConnection(ByVal sckDescriptor As Long)
+Triggered on a succesful connection.
+sckDescriptor is unique for that connection.
+
+Public Event OnDataArrival(ByVal sckDescriptor As Long, Data As String)
+Triggered on incoming data to the socket that is connected to the server.
+
+Public Event OnConnectionClose(ByVal sckDescriptor As Long)
+Triggered when a socket looses connection on some reason
